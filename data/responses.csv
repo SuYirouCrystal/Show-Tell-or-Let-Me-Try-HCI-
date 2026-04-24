@@ -1,0 +1,1 @@
+response_id,participant_id,condition,trial_index,task_id,selected_option,correct_answer,is_correct,ai_recommendation,ai_is_correct,user_thinks_ai_correct,error_detection_correct,confidence_rating,client_decision_ms,server_decision_ms,shown_at,submitted_at,user_agent

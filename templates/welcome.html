@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<section class="card hero-card">
+  <p class="eyebrow">COMSE6178 HCI Study Prototype</p>
+  <h1>Show, Tell, or Let Me Try?</h1>
+  <p>
+    In this study, you will complete six product decision tasks with help from an AI recommendation.
+    The system will randomly assign one explanation format for the full session.
+  </p>
+  <p>
+    This is a backend focused prototype. The front end is intentionally simple and can be replaced later.
+  </p>
+  <form action="{{ url_for('main.start') }}" method="post" class="start-form">
+    <button type="submit" class="primary-button">Start Study</button>
+  </form>
+  <details class="dev-details">
+    <summary>Developer test links</summary>
+    <p>Use these only for local testing, not for real participants.</p>
+    <a href="{{ url_for('main.start', condition='show') }}">Start with Show condition</a>
+    <a href="{{ url_for('main.start', condition='tell') }}">Start with Tell condition</a>
+    <a href="{{ url_for('main.start', condition='try') }}">Start with Let Me Try condition</a>
+  </details>
+</section>
+{% endblock %}

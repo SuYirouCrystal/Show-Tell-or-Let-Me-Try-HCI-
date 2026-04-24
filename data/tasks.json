@@ -1,0 +1,482 @@
+[
+  {
+    "task_id": "1",
+    "title": "Laptop choice",
+    "scenario": "A student needs a laptop for classes, homework, and working in cafes. Battery life and price matter most. Low weight also helps.",
+    "decision_prompt": "Which laptop is the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "NovaBook Air",
+        "attributes": {
+          "battery_life": 13,
+          "price": 899,
+          "weight": 2.7
+        }
+      },
+      {
+        "id": "B",
+        "name": "BudgetPro 14",
+        "attributes": {
+          "battery_life": 9,
+          "price": 699,
+          "weight": 3.4
+        }
+      },
+      {
+        "id": "C",
+        "name": "PowerMax 15",
+        "attributes": {
+          "battery_life": 15,
+          "price": 1299,
+          "weight": 4.2
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "battery_life",
+        "label": "Battery life",
+        "unit": "hours",
+        "direction": "higher",
+        "default_weight": 45,
+        "description": "Longer battery life is better."
+      },
+      {
+        "id": "price",
+        "label": "Price",
+        "unit": "USD",
+        "direction": "lower",
+        "default_weight": 35,
+        "description": "Lower price is better."
+      },
+      {
+        "id": "weight",
+        "label": "Weight",
+        "unit": "lb",
+        "direction": "lower",
+        "default_weight": 20,
+        "description": "Lower weight is better."
+      }
+    ],
+    "ai_recommendation": "A",
+    "correct_answer": "A",
+    "ai_is_correct": true,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that battery life and price are the strongest reasons for the recommendation."
+      },
+      "tell": {
+        "main_text": "The AI recommends NovaBook Air because it offers strong battery life while keeping price and weight reasonable.",
+        "steps": [
+          "Battery life is the most important factor for this user.",
+          "Price is the second most important factor.",
+          "Weight matters, but it is less important than battery life and price."
+        ]
+      },
+      "try": {
+        "instructions": "Change the importance of each factor and observe whether the simulated recommendation changes."
+      }
+    }
+  },
+  {
+    "task_id": "2",
+    "title": "Headphones choice",
+    "scenario": "A frequent traveler wants headphones for flights and long train rides. Noise cancellation and comfort matter more than price.",
+    "decision_prompt": "Which headphones are the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "QuietWave Lite",
+        "attributes": {
+          "noise_canceling": 7,
+          "comfort": 8,
+          "price": 99
+        }
+      },
+      {
+        "id": "B",
+        "name": "TravelSound Pro",
+        "attributes": {
+          "noise_canceling": 9,
+          "comfort": 9,
+          "price": 199
+        }
+      },
+      {
+        "id": "C",
+        "name": "BassBox Max",
+        "attributes": {
+          "noise_canceling": 6,
+          "comfort": 7,
+          "price": 129
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "noise_canceling",
+        "label": "Noise cancellation",
+        "unit": "score",
+        "direction": "higher",
+        "default_weight": 45,
+        "description": "Higher noise cancellation score is better."
+      },
+      {
+        "id": "comfort",
+        "label": "Comfort",
+        "unit": "score",
+        "direction": "higher",
+        "default_weight": 35,
+        "description": "Higher comfort score is better."
+      },
+      {
+        "id": "price",
+        "label": "Price",
+        "unit": "USD",
+        "direction": "lower",
+        "default_weight": 20,
+        "description": "Lower price is better."
+      }
+    ],
+    "ai_recommendation": "A",
+    "correct_answer": "B",
+    "ai_is_correct": false,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that noise cancellation and comfort should carry more weight than price."
+      },
+      "tell": {
+        "main_text": "The AI recommends QuietWave Lite because it is cheaper, but the user said travel comfort and noise cancellation matter more than price.",
+        "steps": [
+          "Noise cancellation is the most important factor for travel.",
+          "Comfort is also very important for long trips.",
+          "Price matters, but it should not dominate this decision."
+        ]
+      },
+      "try": {
+        "instructions": "Change the feature importance values to see when the simulated recommendation favors comfort and noise cancellation over price."
+      }
+    }
+  },
+  {
+    "task_id": "3",
+    "title": "Backpack choice",
+    "scenario": "A student needs a backpack for a laptop, books, and rainy campus walks. Capacity and water resistance matter most. Low weight also helps.",
+    "decision_prompt": "Which backpack is the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "UrbanCarry",
+        "attributes": {
+          "capacity": 24,
+          "water_resistance": 6,
+          "weight": 1.8
+        }
+      },
+      {
+        "id": "B",
+        "name": "CampusShield",
+        "attributes": {
+          "capacity": 28,
+          "water_resistance": 9,
+          "weight": 2.0
+        }
+      },
+      {
+        "id": "C",
+        "name": "FeatherPack",
+        "attributes": {
+          "capacity": 18,
+          "water_resistance": 7,
+          "weight": 1.2
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "capacity",
+        "label": "Capacity",
+        "unit": "liters",
+        "direction": "higher",
+        "default_weight": 40,
+        "description": "Higher capacity is better."
+      },
+      {
+        "id": "water_resistance",
+        "label": "Water resistance",
+        "unit": "score",
+        "direction": "higher",
+        "default_weight": 40,
+        "description": "Higher water resistance is better."
+      },
+      {
+        "id": "weight",
+        "label": "Weight",
+        "unit": "lb",
+        "direction": "lower",
+        "default_weight": 20,
+        "description": "Lower weight is better."
+      }
+    ],
+    "ai_recommendation": "B",
+    "correct_answer": "B",
+    "ai_is_correct": true,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that capacity and water resistance are the main reasons for the recommendation."
+      },
+      "tell": {
+        "main_text": "The AI recommends CampusShield because it has the best capacity and the strongest water resistance, while its weight is still acceptable.",
+        "steps": [
+          "Capacity matters because the user carries a laptop and books.",
+          "Water resistance matters because the user walks in rain.",
+          "Weight matters less because all options are reasonably portable."
+        ]
+      },
+      "try": {
+        "instructions": "Change capacity, water resistance, and weight importance to explore whether the recommendation changes."
+      }
+    }
+  },
+  {
+    "task_id": "4",
+    "title": "Meal kit choice",
+    "scenario": "A busy person wants a meal kit that is healthy, reasonably quick to prepare, and not too expensive. Health matters most.",
+    "decision_prompt": "Which meal kit is the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "QuickLite Meals",
+        "attributes": {
+          "health_score": 7,
+          "prep_time": 15,
+          "price": 12
+        }
+      },
+      {
+        "id": "B",
+        "name": "FreshBalanced",
+        "attributes": {
+          "health_score": 9,
+          "prep_time": 22,
+          "price": 13
+        }
+      },
+      {
+        "id": "C",
+        "name": "FamilyValue Box",
+        "attributes": {
+          "health_score": 5,
+          "prep_time": 30,
+          "price": 8
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "health_score",
+        "label": "Health score",
+        "unit": "score",
+        "direction": "higher",
+        "default_weight": 50,
+        "description": "Higher health score is better."
+      },
+      {
+        "id": "prep_time",
+        "label": "Preparation time",
+        "unit": "minutes",
+        "direction": "lower",
+        "default_weight": 30,
+        "description": "Lower preparation time is better."
+      },
+      {
+        "id": "price",
+        "label": "Price per serving",
+        "unit": "USD",
+        "direction": "lower",
+        "default_weight": 20,
+        "description": "Lower price is better."
+      }
+    ],
+    "ai_recommendation": "A",
+    "correct_answer": "B",
+    "ai_is_correct": false,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that health score should be the largest factor in this task."
+      },
+      "tell": {
+        "main_text": "The AI recommends QuickLite Meals because it is faster, but the task says health matters most. FreshBalanced has the strongest health score.",
+        "steps": [
+          "Health is the top priority for this user.",
+          "Preparation time is important but secondary.",
+          "Price matters, but it should not outweigh the health requirement."
+        ]
+      },
+      "try": {
+        "instructions": "Adjust the weights to see how much health importance is needed before the simulated recommendation changes."
+      }
+    }
+  },
+  {
+    "task_id": "5",
+    "title": "Phone plan choice",
+    "scenario": "An international student needs a phone plan with enough mobile data and many international minutes. Price matters, but communication needs are more important.",
+    "decision_prompt": "Which phone plan is the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "MetroStudent",
+        "attributes": {
+          "monthly_price": 35,
+          "data": 10,
+          "international_minutes": 100
+        }
+      },
+      {
+        "id": "B",
+        "name": "GlobalConnect",
+        "attributes": {
+          "monthly_price": 45,
+          "data": 20,
+          "international_minutes": 500
+        }
+      },
+      {
+        "id": "C",
+        "name": "BudgetTalk",
+        "attributes": {
+          "monthly_price": 25,
+          "data": 5,
+          "international_minutes": 50
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "data",
+        "label": "Mobile data",
+        "unit": "GB",
+        "direction": "higher",
+        "default_weight": 40,
+        "description": "More mobile data is better."
+      },
+      {
+        "id": "international_minutes",
+        "label": "International minutes",
+        "unit": "minutes",
+        "direction": "higher",
+        "default_weight": 40,
+        "description": "More international minutes are better."
+      },
+      {
+        "id": "monthly_price",
+        "label": "Monthly price",
+        "unit": "USD",
+        "direction": "lower",
+        "default_weight": 20,
+        "description": "Lower monthly price is better."
+      }
+    ],
+    "ai_recommendation": "B",
+    "correct_answer": "B",
+    "ai_is_correct": true,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that data and international minutes are the strongest factors."
+      },
+      "tell": {
+        "main_text": "The AI recommends GlobalConnect because it provides the most data and international minutes, which match the user's main needs.",
+        "steps": [
+          "Mobile data is important for daily use.",
+          "International minutes are important for calling family or contacts abroad.",
+          "Price matters, but the cheaper plans do not meet the communication needs as well."
+        ]
+      },
+      "try": {
+        "instructions": "Change the importance of data, international minutes, and monthly price to see how the recommendation changes."
+      }
+    }
+  },
+  {
+    "task_id": "6",
+    "title": "Monitor choice",
+    "scenario": "A computer science student needs a monitor for coding and schoolwork. Screen space and resolution are important, but the student has a limited budget.",
+    "decision_prompt": "Which monitor is the best overall choice for this user?",
+    "options": [
+      {
+        "id": "A",
+        "name": "CodeView 27",
+        "attributes": {
+          "screen_size": 27,
+          "resolution_score": 3,
+          "price": 249
+        }
+      },
+      {
+        "id": "B",
+        "name": "UltraSharp 32",
+        "attributes": {
+          "screen_size": 32,
+          "resolution_score": 4,
+          "price": 549
+        }
+      },
+      {
+        "id": "C",
+        "name": "BudgetView 24",
+        "attributes": {
+          "screen_size": 24,
+          "resolution_score": 2,
+          "price": 149
+        }
+      }
+    ],
+    "features": [
+      {
+        "id": "screen_size",
+        "label": "Screen size",
+        "unit": "inches",
+        "direction": "higher",
+        "default_weight": 35,
+        "description": "Larger screen size is better."
+      },
+      {
+        "id": "resolution_score",
+        "label": "Resolution",
+        "unit": "score",
+        "direction": "higher",
+        "default_weight": 35,
+        "description": "Higher resolution score is better."
+      },
+      {
+        "id": "price",
+        "label": "Price",
+        "unit": "USD",
+        "direction": "lower",
+        "default_weight": 30,
+        "description": "Lower price is better."
+      }
+    ],
+    "ai_recommendation": "B",
+    "correct_answer": "A",
+    "ai_is_correct": false,
+    "explanations": {
+      "show": {
+        "summary": "The visual explanation shows that price is still important because the user has a limited budget."
+      },
+      "tell": {
+        "main_text": "The AI recommends UltraSharp 32 because it has the largest screen and highest resolution, but it may overvalue specifications and undervalue the limited budget.",
+        "steps": [
+          "Screen size and resolution help coding productivity.",
+          "Budget is also important in this scenario.",
+          "A balanced option can be better than the most expensive option."
+        ]
+      },
+      "try": {
+        "instructions": "Adjust the screen size, resolution, and price weights to test how the simulated recommendation changes."
+      }
+    }
+  }
+]
