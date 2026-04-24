@@ -1,22 +1,22 @@
 # Show, Tell, or Let Me Try
 
-这是一个基于 Flask 的 HCI 实验后端骨架。它实现了完整实验流程，前端只保留最小可用页面，方便前端同学之后替换 UI。
+This is a Flask-based backend skeleton for an HCI study. It implements the full experiment flow while keeping the frontend intentionally minimal so it can be replaced later.
 
-## 项目目标
+## Project Goal
 
-这个项目用于比较三种 AI explanation modality 对用户理解、信任校准、认知负担和任务表现的影响。
+This project compares how three AI explanation modalities affect user understanding, trust calibration, cognitive load, and task performance.
 
-三种条件是：
+The three conditions are:
 
-1. `show`：视觉解释
-2. `tell`：文字解释
-3. `try`：交互式解释
+1. `show`: visual explanation
+2. `tell`: text explanation
+3. `try`: interactive explanation
 
-用户进入实验后，后端会随机分配一种条件。整个 session 中，用户只会看到这一种解释方式。
+When a participant starts the study, the backend randomly assigns one condition. The participant will only see that explanation format for the entire session.
 
-## 如何运行
+## How To Run
 
-建议使用 Python 3.10 或以上版本。
+Python 3.10 or newer is recommended.
 
 ```bash
 cd hci_explanation_backend
@@ -26,15 +26,15 @@ pip install -r requirements.txt
 python app.py
 ```
 
-然后打开：
+Then open:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-## 本地测试指定条件
+## Local Testing With A Specific Condition
 
-这些链接只用于开发测试，不要发给真实 participant。
+These links are only for development testing and should not be sent to real participants.
 
 ```text
 http://127.0.0.1:5000/start?condition=show
@@ -42,9 +42,9 @@ http://127.0.0.1:5000/start?condition=tell
 http://127.0.0.1:5000/start?condition=try
 ```
 
-真实实验请使用首页的 Start Study 按钮，让系统随机分组。
+For the actual study flow, use the `Start Study` button on the welcome page so the system can randomize the condition.
 
-## 项目结构
+## Project Structure
 
 ```text
 hci_explanation_backend/
@@ -76,81 +76,80 @@ hci_explanation_backend/
     analyze_results.py
 ```
 
+## Optional Analysis Script
 
-## 可选数据分析脚本
-
-收完数据后，如果想运行简单统计分析，可以再安装分析依赖：
+After collecting data, you can install the analysis dependencies and run the basic analysis script:
 
 ```bash
 pip install -r requirements-analysis.txt
 python scripts/analyze_results.py
 ```
 
-输出会保存在：
+The output will be saved to:
 
 ```text
 analysis_output/
 ```
 
-## 后端已经实现的功能
+## Implemented Backend Features
 
-### 1. 随机分组
+### 1. Random condition assignment
 
-用户开始实验时，后端会随机分配：
+When a participant starts the study, the backend randomly assigns one of:
 
 ```text
 show / tell / try
 ```
 
-代码位置：
+Implementation:
 
 ```text
 backend/experiment.py
 ```
 
-### 2. 任务读取
+### 2. Task loading
 
-所有实验任务都放在：
+All experiment tasks are stored in:
 
 ```text
 data/tasks.json
 ```
 
-每个任务包含：
+Each task includes:
 
 ```text
-任务场景
-产品选项
+task scenario
+product options
 AI recommendation
-正确答案
-AI 是否正确
-三种解释条件需要的数据
+correct answer
+whether the AI is correct
+data needed for the three explanation conditions
 ```
 
-### 3. 实验流程控制
+### 3. Experiment flow control
 
-流程是：
+The flow is:
 
 ```text
 /              welcome page
-/start         创建 participant session，随机分组
-/task/1        第 1 题
-/task/2        第 2 题
+/start         create participant session and assign condition
+/task/1        task 1
+/task/2        task 2
 ...
-/task/6        第 6 题
-/survey        结束问卷
-/done          完成页面
+/task/6        task 6
+/survey        final survey
+/done          completion page
 ```
 
-### 4. 答题数据保存
+### 4. Response storage
 
-每道题提交后，后端会写入：
+After each task submission, the backend writes data to:
 
 ```text
 data/responses.csv
 ```
 
-字段包括：
+Fields include:
 
 ```text
 participant_id
@@ -168,15 +167,15 @@ client_decision_ms
 server_decision_ms
 ```
 
-### 5. 问卷数据保存
+### 5. Survey storage
 
-最终问卷写入：
+The final survey is written to:
 
 ```text
 data/surveys.csv
 ```
 
-字段包括：
+Fields include:
 
 ```text
 perceived_understanding
@@ -188,15 +187,15 @@ engagement
 feedback
 ```
 
-### 6. 交互式解释 API
+### 6. Interactive explanation API
 
-`try` 条件中的 sliders 会调用这个接口：
+The sliders in the `try` condition call this endpoint:
 
 ```text
 POST /api/tasks/<task_id>/simulate
 ```
 
-请求格式：
+Request format:
 
 ```json
 {
@@ -208,7 +207,7 @@ POST /api/tasks/<task_id>/simulate
 }
 ```
 
-返回格式：
+Response format:
 
 ```json
 {
@@ -218,11 +217,11 @@ POST /api/tasks/<task_id>/simulate
 }
 ```
 
-这个接口不是一个真实机器学习模型。它是一个 deterministic weighted scoring simulation，用来支持 HCI 实验中的交互式解释。
+This endpoint is not a real machine learning model. It is a deterministic weighted scoring simulation used to support the interactive explanation condition in the HCI study.
 
-## 数据导出
+## Data Export
 
-本地运行时可以访问：
+During local development, you can access:
 
 ```text
 /admin/export/responses
@@ -230,13 +229,13 @@ POST /api/tasks/<task_id>/simulate
 /admin/export/participants
 ```
 
-注意：这些 route 没有身份验证。部署到公网前要删除或加密码。
+These routes do not have authentication. Remove them or protect them before deploying to a public environment.
 
-## 前端说明
+## Frontend Notes
 
-前端页面只是骨架，主要目的是让后端流程可以跑通。
+The frontend pages are only a minimal skeleton. Their main purpose is to let the backend flow run end to end.
 
-前端同学之后可以替换：
+Frontend teammates can later replace:
 
 ```text
 templates/*.html
@@ -244,9 +243,9 @@ static/css/style.css
 static/js/task.js
 ```
 
-只要保留表单字段名，就不需要改后端。
+As long as the form field names stay the same, the backend does not need to change.
 
-关键表单字段名：
+Important form field names:
 
 ```text
 selected_option
@@ -262,11 +261,11 @@ engagement
 feedback
 ```
 
-## 后续可以加的功能
+## Possible Future Improvements
 
-1. 更漂亮的前端页面
-2. 平衡随机分组，保证三组人数接近
-3. 防止重复提交
-4. 管理员登录
-5. 数据分析 dashboard
-6. 部署到 Render、Railway 或 Columbia server
+1. A more polished frontend interface
+2. Balanced random assignment so group sizes stay closer
+3. Protection against duplicate submissions
+4. Admin authentication
+5. A data analysis dashboard
+6. Deployment to Render, Railway, or a university server
