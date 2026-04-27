@@ -2,62 +2,69 @@
 {% block title %}Final Survey{% endblock %}
 {% block content %}
 <section class="card survey-card">
-  <p class="eyebrow">Final survey</p>
-  <h1>Tell us about your experience</h1>
-  <p>Please answer based on the explanation format you used in this session.</p>
+  <div class="survey-intro">
+    <p class="eyebrow">Final survey</p>
+    <h1>Tell us about your experience</h1>
+    <p class="lead">Please answer based on the explanation format you used in this session.</p>
+    <span class="condition-badge condition-{{ condition }}">
+      {% if condition == "show" %}Show: visual{% elif condition == "tell" %}Tell: text{% else %}Let Me Try: interactive{% endif %}
+    </span>
+  </div>
 
   <form action="{{ url_for('main.survey') }}" method="post" class="response-form">
-    <label class="select-line">
-      <span>I understood how the AI made its recommendations.</span>
-      <select name="perceived_understanding" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+    <div class="survey-grid">
+      <label class="select-line">
+        <span>I understood how the AI made its recommendations.</span>
+        <select name="perceived_understanding" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
 
-    <label class="select-line">
-      <span>I trusted the AI recommendations.</span>
-      <select name="trust" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+      <label class="select-line">
+        <span>I trusted the AI recommendations.</span>
+        <select name="trust" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
 
-    <label class="select-line">
-      <span>Mental demand was high.</span>
-      <select name="mental_demand" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+      <label class="select-line">
+        <span>Mental demand was high.</span>
+        <select name="mental_demand" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
 
-    <label class="select-line">
-      <span>I had to work hard to complete the tasks.</span>
-      <select name="effort" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+      <label class="select-line">
+        <span>I had to work hard to complete the tasks.</span>
+        <select name="effort" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
 
-    <label class="select-line">
-      <span>I felt frustrated during the tasks.</span>
-      <select name="frustration" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+      <label class="select-line">
+        <span>I felt frustrated during the tasks.</span>
+        <select name="frustration" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
 
-    <label class="select-line">
-      <span>The explanation format kept me engaged.</span>
-      <select name="engagement" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
-      </select>
-    </label>
+      <label class="select-line">
+        <span>The explanation format kept me engaged.</span>
+        <select name="engagement" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
 
     <label class="textarea-line">
       <span>Optional feedback</span>
-      <textarea name="feedback" rows="4" placeholder="Write any comments here."></textarea>
+      <textarea name="feedback" rows="5" placeholder="What helped or hurt your understanding of the AI recommendation?"></textarea>
     </label>
 
     <button type="submit" class="primary-button">Submit survey</button>

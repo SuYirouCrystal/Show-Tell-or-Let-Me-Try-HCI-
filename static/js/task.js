@@ -19,6 +19,7 @@
   const taskId = page.dataset.taskId;
   const sliders = Array.from(document.querySelectorAll(".weight-slider"));
   const resultBox = document.getElementById("simulation-result");
+  const scoreBreakdown = document.getElementById("score-breakdown");
 
   function collectWeights() {
     const weights = {};
@@ -30,6 +31,35 @@
       }
     });
     return weights;
+  }
+
+  function renderScores(scores) {
+    if (!scoreBreakdown) {
+      return;
+    }
+
+    scoreBreakdown.replaceChildren();
+    scores.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "score-row";
+
+      const name = document.createElement("span");
+      name.textContent = `Option ${item.option_id}`;
+
+      const track = document.createElement("span");
+      track.className = "score-track";
+
+      const fill = document.createElement("span");
+      fill.className = "score-fill";
+      fill.style.width = `${Math.round(item.score * 100)}%`;
+      track.appendChild(fill);
+
+      const score = document.createElement("strong");
+      score.textContent = `${Math.round(item.score * 100)}%`;
+
+      row.append(name, track, score);
+      scoreBreakdown.appendChild(row);
+    });
   }
 
   async function simulate() {
@@ -44,9 +74,13 @@
       if (resultBox) {
         resultBox.textContent = `Current simulated recommendation: Option ${data.recommendation}, ${data.recommendation_name}`;
       }
+      renderScores(data.scores || []);
     } catch (error) {
       if (resultBox) {
         resultBox.textContent = "Simulation failed. The backend may not be running.";
+      }
+      if (scoreBreakdown) {
+        scoreBreakdown.replaceChildren();
       }
     }
   }

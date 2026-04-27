@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Done{% endblock %}
 {% block content %}
-<section class="card hero-card">
+<section class="card hero-card completion-card">
+  <div class="success-mark" aria-hidden="true">✓</div>
   <p class="eyebrow">Study complete</p>
   <h1>Thank you for participating.</h1>
-  <p>Your responses have been saved.</p>
+  <p>Your task responses and final survey have been saved for analysis.</p>
+  <a href="{{ url_for('main.welcome') }}" class="secondary-link">Return to start page</a>
 </section>
 {% endblock %}

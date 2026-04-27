@@ -7,6 +7,23 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  <div class="site-bg" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('main.welcome') }}" aria-label="Show, Tell, or Let Me Try home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" role="img" focusable="false">
+          <path d="M11 10h26a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6H25l-9 6v-6h-5a6 6 0 0 1-6-6V16a6 6 0 0 1 6-6Z"></path>
+          <circle cx="17" cy="23" r="2.4"></circle>
+          <circle cx="24" cy="23" r="2.4"></circle>
+          <circle cx="31" cy="23" r="2.4"></circle>
+        </svg>
+      </span>
+      <span>
+        <strong>Show, Tell, or Let Me Try?</strong>
+        <small>Comparing Explanation Modalities for AI Decision Support</small>
+      </span>
+    </a>
+  </header>
   <main class="page-shell">
     {% block content %}{% endblock %}
   </main>

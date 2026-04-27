@@ -1,19 +1,63 @@
 {% extends "base.html" %}
 {% block title %}Welcome{% endblock %}
 {% block content %}
-<section class="card hero-card">
-  <p class="eyebrow">COMSE6178 HCI Study Prototype</p>
-  <h1>Show, Tell, or Let Me Try?</h1>
-  <p>
-    In this study, you will complete six product decision tasks with help from an AI recommendation.
-    The system will randomly assign one explanation format for the full session.
-  </p>
-  <p>
-    This is a backend focused prototype. The front end is intentionally simple and can be replaced later.
-  </p>
-  <form action="{{ url_for('main.start') }}" method="post" class="start-form">
-    <button type="submit" class="primary-button">Start Study</button>
-  </form>
+<section class="hero-layout">
+  <div class="hero-copy">
+    <p class="eyebrow">COMSE6178 HCI Study Prototype</p>
+    <h1>Show, Tell, or Let Me Try?</h1>
+    <p class="lead">
+      Compare how visual, textual, and interactive AI explanations shape product decisions,
+      confidence, and trust calibration.
+    </p>
+    <div class="hero-actions">
+      <form action="{{ url_for('main.start') }}" method="post" class="start-form">
+        <button type="submit" class="primary-button">Start randomized study</button>
+      </form>
+      {% if has_session %}
+      <a href="{{ url_for('main.current_task') }}" class="secondary-link">Resume current session</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <aside class="card study-card">
+    <p class="eyebrow">What participants do</p>
+    <ol class="study-steps">
+      <li>Review six product choice scenarios.</li>
+      <li>See one AI recommendation per task.</li>
+      <li>Use one assigned explanation format for the full session.</li>
+      <li>Choose a product, judge the AI, and rate confidence.</li>
+    </ol>
+  </aside>
+</section>
+
+<section class="condition-grid" aria-label="Explanation conditions">
+  <article class="condition-card show-accent">
+    <span class="condition-pill">Show</span>
+    <h2>Visual Explanation</h2>
+    <p>Feature-importance bars highlight which criteria the recommendation weighted most.</p>
+  </article>
+  <article class="condition-card tell-accent">
+    <span class="condition-pill">Tell</span>
+    <h2>Text Explanation</h2>
+    <p>Step-by-step language explains the recommendation in the same decision context.</p>
+  </article>
+  <article class="condition-card try-accent">
+    <span class="condition-pill">Let Me Try</span>
+    <h2>Interactive Explanation</h2>
+    <p>Sliders let participants adjust priorities and observe simulated recommendation changes.</p>
+  </article>
+</section>
+
+<section class="card research-card">
+  <div>
+    <p class="eyebrow">Research focus</p>
+    <h2>Understanding, trust, and cognitive load</h2>
+    <p>
+      The backend keeps model outputs static across conditions so the study can isolate explanation
+      modality rather than model accuracy. Some AI recommendations are intentionally wrong so the
+      system can measure error detection and calibrated trust.
+    </p>
+  </div>
   <details class="dev-details">
     <summary>Developer test links</summary>
     <p>Use these only for local testing, not for real participants.</p>

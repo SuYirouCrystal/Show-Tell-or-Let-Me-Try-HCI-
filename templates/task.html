@@ -2,132 +2,181 @@
 {% block title %}Task {{ progress.trial_number }}{% endblock %}
 {% block content %}
 <section class="card task-card" data-task-id="{{ task.task_id }}" data-condition="{{ condition }}">
-  <div class="progress-row">
-    <span>Task {{ progress.trial_number }} of {{ progress.task_count }}</span>
-    <span>Condition: {{ condition }}</span>
-  </div>
-  <div class="progress-bar" aria-hidden="true">
-    <div class="progress-fill" style="width: {{ progress.percent }}%;"></div>
+  <div class="task-topbar">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span>Task {{ progress.trial_number }} of {{ progress.task_count }}</span>
+        <span>{{ progress.percent }}% complete</span>
+      </div>
+      <div class="progress-bar" aria-hidden="true">
+        <div class="progress-fill" style="width: {{ progress.percent }}%;"></div>
+      </div>
+    </div>
+    <span class="condition-badge condition-{{ condition }}">
+      {% if condition == "show" %}Show: visual{% elif condition == "tell" %}Tell: text{% else %}Let Me Try: interactive{% endif %}
+    </span>
   </div>
 
-  <h1>{{ task.title }}</h1>
-  <p class="scenario">{{ task.scenario }}</p>
-  <h2>{{ task.decision_prompt }}</h2>
+  <div class="task-heading">
+    <p class="eyebrow">Decision scenario</p>
+    <h1>{{ task.title }}</h1>
+    <p class="scenario">{{ task.scenario }}</p>
+    <h2>{{ task.decision_prompt }}</h2>
+  </div>
 
-  <section class="option-grid" aria-label="Product options">
-    {% for option in task.options %}
-    <article class="option-card">
-      <h3>Option {{ option.id }}: {{ option.name }}</h3>
-      <dl>
-        {% for feature in task.features %}
+  <div class="task-layout">
+    <section class="workspace-card" aria-label="Product options">
+      <div class="section-heading">
+        <p class="eyebrow">Compare options</p>
+        <h2>Product candidates</h2>
+      </div>
+      <div class="option-grid">
+        {% for option in task.options %}
+        <article class="option-card{% if option.id == task.ai_recommendation %} recommended-option{% endif %}">
+          <div class="option-header">
+            <span class="option-letter">{{ option.id }}</span>
+            <div>
+              <h3>{{ option.name }}</h3>
+              {% if option.id == task.ai_recommendation %}
+              <p class="mini-label">AI recommended</p>
+              {% endif %}
+            </div>
+          </div>
+          <dl>
+            {% for feature in task.features %}
+            <div>
+              <dt>{{ feature.label }}</dt>
+              <dd>{{ option.attributes.get(feature.id) }} {{ feature.unit }}</dd>
+            </div>
+            {% endfor %}
+          </dl>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ai-box">
+      <div class="ai-header">
         <div>
-          <dt>{{ feature.label }}</dt>
-          <dd>{{ option.attributes.get(feature.id) }} {{ feature.unit }}</dd>
+          <p class="eyebrow">AI recommendation</p>
+          <h2>
+            Option {{ task.ai_recommendation }}
+            {% for option in task.options %}
+              {% if option.id == task.ai_recommendation %}{{ option.name }}{% endif %}
+            {% endfor %}
+          </h2>
         </div>
-        {% endfor %}
-      </dl>
-    </article>
-    {% endfor %}
-  </section>
+        <span class="ai-chip">Static output</span>
+      </div>
 
-  <section class="ai-box">
-    <p class="eyebrow">AI recommendation</p>
-    <h2>
-      Option {{ task.ai_recommendation }}
-      {% for option in task.options %}
-        {% if option.id == task.ai_recommendation %}{{ option.name }}{% endif %}
-      {% endfor %}
-    </h2>
-
-    {% if condition == "show" %}
-      <div class="explanation-panel show-panel">
-        <h3>Visual explanation</h3>
-        <p>{{ task.explanation.summary }}</p>
-        {% for feature in task.features %}
-        <div class="feature-bar-row">
-          <div class="feature-bar-label">
-            <span>{{ feature.label }}</span>
-            <span>{{ feature.default_weight }}%</span>
+      {% if condition == "show" %}
+        <div class="explanation-panel show-panel">
+          <h3>Visual explanation</h3>
+          <p>{{ task.explanation.summary }}</p>
+          <div class="visual-stack" aria-label="Feature importance visualization">
+            {% for feature in task.features %}
+            <div class="feature-bar-row">
+              <div class="feature-bar-label">
+                <span>{{ feature.label }}</span>
+                <span>{{ feature.default_weight }}%</span>
+              </div>
+              <div class="feature-bar">
+                <div class="feature-bar-fill" style="width: {{ feature.default_weight }}%;"></div>
+              </div>
+              <p class="feature-help">{{ feature.description }}</p>
+            </div>
+            {% endfor %}
           </div>
-          <div class="feature-bar">
-            <div class="feature-bar-fill" style="width: {{ feature.default_weight }}%;"></div>
+        </div>
+      {% elif condition == "tell" %}
+        <div class="explanation-panel tell-panel">
+          <h3>Text explanation</h3>
+          <p class="explanation-main">{{ task.explanation.main_text }}</p>
+          <ol class="reason-list">
+            {% for step in task.explanation.steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% elif condition == "try" %}
+        <div class="explanation-panel try-panel">
+          <h3>Interactive explanation</h3>
+          <p>{{ task.explanation.instructions }}</p>
+          <div id="interactive-controls" class="slider-stack">
+            {% for feature in task.features %}
+            <label class="slider-row">
+              <span>
+                <strong>{{ feature.label }}</strong>
+                <small>{{ feature.description }}</small>
+              </span>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="{{ feature.default_weight }}"
+                data-feature-id="{{ feature.id }}"
+                class="weight-slider"
+              >
+              <output>{{ feature.default_weight }}</output>
+            </label>
+            {% endfor %}
           </div>
-          <p class="feature-help">{{ feature.description }}</p>
+          <div class="simulation-box">
+            <div>
+              <p class="eyebrow">Simulated result</p>
+              <p id="simulation-result">Move a slider to simulate a new recommendation.</p>
+            </div>
+            <div id="score-breakdown" class="score-breakdown" aria-live="polite"></div>
+          </div>
         </div>
-        {% endfor %}
-      </div>
-    {% elif condition == "tell" %}
-      <div class="explanation-panel tell-panel">
-        <h3>Text explanation</h3>
-        <p>{{ task.explanation.main_text }}</p>
-        <ol>
-          {% for step in task.explanation.steps %}
-          <li>{{ step }}</li>
-          {% endfor %}
-        </ol>
-      </div>
-    {% elif condition == "try" %}
-      <div class="explanation-panel try-panel">
-        <h3>Interactive explanation</h3>
-        <p>{{ task.explanation.instructions }}</p>
-        <div id="interactive-controls">
-          {% for feature in task.features %}
-          <label class="slider-row">
-            <span>{{ feature.label }}</span>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value="{{ feature.default_weight }}"
-              data-feature-id="{{ feature.id }}"
-              class="weight-slider"
-            >
-            <output>{{ feature.default_weight }}</output>
-          </label>
-          {% endfor %}
-        </div>
-        <div class="simulation-box">
-          <p class="eyebrow">Simulated result</p>
-          <p id="simulation-result">Move a slider to simulate a new recommendation.</p>
-        </div>
-      </div>
-    {% endif %}
-  </section>
+      {% endif %}
+    </section>
+  </div>
 
   <form action="{{ url_for('main.task', trial_number=progress.trial_number) }}" method="post" class="response-form" id="response-form">
     <input type="hidden" name="client_decision_ms" id="client_decision_ms" value="">
 
-    <fieldset>
-      <legend>Your final product choice</legend>
-      {% for option in task.options %}
-      <label class="radio-line">
-        <input type="radio" name="selected_option" value="{{ option.id }}" required>
-        Option {{ option.id }}: {{ option.name }}
-      </label>
-      {% endfor %}
-    </fieldset>
+    <div class="response-header">
+      <p class="eyebrow">Your response</p>
+      <h2>Make your final decision</h2>
+    </div>
 
-    <fieldset>
-      <legend>Do you think the AI recommendation is correct for this task?</legend>
-      <label class="radio-line">
-        <input type="radio" name="user_thinks_ai_correct" value="yes" required>
-        Yes, I think the AI is correct.
-      </label>
-      <label class="radio-line">
-        <input type="radio" name="user_thinks_ai_correct" value="no" required>
-        No, I think the AI is wrong.
-      </label>
-    </fieldset>
-
-    <label class="select-line">
-      <span>How confident are you in your choice?</span>
-      <select name="confidence_rating" required>
-        <option value="">Select one</option>
-        {% for value in range(1, 8) %}
-        <option value="{{ value }}">{{ value }} {% if value == 1 %}Very low{% elif value == 7 %}Very high{% endif %}</option>
+    <div class="response-grid">
+      <fieldset>
+        <legend>Your final product choice</legend>
+        {% for option in task.options %}
+        <label class="choice-card">
+          <input type="radio" name="selected_option" value="{{ option.id }}" required>
+          <span>Option {{ option.id }}</span>
+          <strong>{{ option.name }}</strong>
+        </label>
         {% endfor %}
-      </select>
-    </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Do you think the AI recommendation is correct for this task?</legend>
+        <label class="choice-card compact">
+          <input type="radio" name="user_thinks_ai_correct" value="yes" required>
+          <span>Yes</span>
+          <strong>I think the AI is correct.</strong>
+        </label>
+        <label class="choice-card compact">
+          <input type="radio" name="user_thinks_ai_correct" value="no" required>
+          <span>No</span>
+          <strong>I think the AI is wrong.</strong>
+        </label>
+      </fieldset>
+
+      <label class="select-line confidence-field">
+        <span>How confident are you in your choice?</span>
+        <select name="confidence_rating" required>
+          <option value="">Select one</option>
+          {% for value in range(1, 8) %}
+          <option value="{{ value }}">{{ value }}{% if value == 1 %} - Very low{% elif value == 7 %} - Very high{% endif %}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
 
     <button type="submit" class="primary-button">Submit and continue</button>
   </form>
