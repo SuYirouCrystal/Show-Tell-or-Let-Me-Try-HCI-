@@ -32,6 +32,12 @@ Then open:
 http://127.0.0.1:5000
 ```
 
+To listen on your local network instead of only your own machine:
+
+```bash
+HOST=0.0.0.0 PORT=5000 FLASK_DEBUG=false python3 app.py
+```
+
 ## Local Testing With A Specific Condition
 
 These links are only for development testing and should not be sent to real participants.
@@ -43,6 +49,40 @@ http://127.0.0.1:5000/consent?condition=try
 ```
 
 For the actual study flow, send participants to the welcome page and have them start from the consent screen so the system can randomize the condition.
+
+## Remote Participant Link While Keeping Local CSV Files
+
+If you want participants to just click a link and still save directly into your local `data/*.csv` files, the simplest setup is:
+
+1. Run the Flask app on your machine with `HOST=0.0.0.0`.
+2. Expose that local port with a tunnel tool such as `cloudflared` or `ngrok`.
+3. Send participants the public HTTPS link from the tunnel.
+4. Keep your laptop awake and the Flask process running for the full study session.
+
+Example local app command:
+
+```bash
+HOST=0.0.0.0 PORT=5000 FLASK_DEBUG=false python3 app.py
+```
+
+Example tunnel commands after you install one tool:
+
+```bash
+cloudflared tunnel --url http://127.0.0.1:5000
+```
+
+or
+
+```bash
+ngrok http 5000
+```
+
+Important constraints:
+
+- Your machine must stay online during the study.
+- If the Flask process stops, participants lose access immediately.
+- This is acceptable for a small class study, but not for heavy simultaneous traffic.
+- The `/admin/export/*` routes should not be shared with participants.
 
 ## Project Structure
 

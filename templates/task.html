@@ -58,7 +58,9 @@
     <section class="ai-box">
       <div class="ai-header">
         <div>
-          <p class="eyebrow">AI recommendation</p>
+          <p class="eyebrow">
+            {% if condition == "try" %}Original AI recommendation{% else %}AI recommendation{% endif %}
+          </p>
           <h2>
             Option {{ task.ai_recommendation }}
             {% for option in task.options %}
@@ -66,7 +68,32 @@
             {% endfor %}
           </h2>
         </div>
-        <span class="ai-chip">Static output</span>
+        <span class="ai-chip">
+          {% if condition == "try" %}Fixed AI output{% else %}Static output{% endif %}
+        </span>
+      </div>
+
+      <div class="purpose-panel">
+        <p class="eyebrow">Read this before deciding</p>
+        {% if condition == "show" %}
+        <h3>Purpose of this panel</h3>
+        <p>
+          This visual explanation highlights which factors the AI emphasized when it produced the recommendation above.
+          The bars are a static explanation of the AI's reasoning for this task.
+        </p>
+        {% elif condition == "tell" %}
+        <h3>Purpose of this panel</h3>
+        <p>
+          This text explanation describes the AI's reasoning in words. Read it as the AI's stated rationale for the
+          recommendation above.
+        </p>
+        {% elif condition == "try" %}
+        <h3>Purpose of this panel</h3>
+        <p>
+          The recommendation above is the AI's original fixed answer. The simulation below is a separate what-if tool:
+          when you move the sliders, it shows how a simplified scoring model would change if feature priorities changed.
+        </p>
+        {% endif %}
       </div>
 
       {% if condition == "show" %}
@@ -123,8 +150,8 @@
           </div>
           <div class="simulation-box">
             <div>
-              <p class="eyebrow">Simulated result</p>
-              <p id="simulation-result">Move a slider to simulate a new recommendation.</p>
+              <p class="eyebrow">What-if simulation</p>
+              <p id="simulation-result">Move a slider to see how the simplified simulation changes.</p>
             </div>
             <div id="score-breakdown" class="score-breakdown" aria-live="polite"></div>
           </div>
@@ -142,6 +169,15 @@
     </div>
 
     <div class="response-grid">
+      <fieldset>
+        <legend>Before you answer</legend>
+        <label class="choice-card compact">
+          <input type="checkbox" name="read_explanation_ack" value="yes" required>
+          <span>Required</span>
+          <strong>I read the purpose and explanation above before making my decision.</strong>
+        </label>
+      </fieldset>
+
       <fieldset>
         <legend>Your final product choice</legend>
         {% for option in task.options %}

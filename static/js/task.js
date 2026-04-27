@@ -72,7 +72,7 @@
       });
       const data = await response.json();
       if (resultBox) {
-        resultBox.textContent = `Current simulated recommendation: Option ${data.recommendation}, ${data.recommendation_name}`;
+        resultBox.textContent = `Current what-if result: Option ${data.recommendation}, ${data.recommendation_name}`;
       }
       renderScores(data.scores || []);
     } catch (error) {
