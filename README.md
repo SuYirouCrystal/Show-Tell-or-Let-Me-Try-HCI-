@@ -12,18 +12,18 @@ The three conditions are:
 2. `tell`: text explanation
 3. `try`: interactive explanation
 
-When a participant starts the study, the backend randomly assigns one condition. The participant will only see that explanation format for the entire session.
+When a participant starts the study, the backend assigns one condition and the participant will only see that explanation format for the entire session.
 
 ## How To Run
 
 Python 3.10 or newer is recommended.
 
 ```bash
-cd hci_explanation_backend
-python -m venv .venv
+cd /Users/crystal_su/Show-Tell-or-Let-Me-Try-HCI-
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python app.py
+python3 app.py
 ```
 
 Then open:
@@ -37,12 +37,12 @@ http://127.0.0.1:5000
 These links are only for development testing and should not be sent to real participants.
 
 ```text
-http://127.0.0.1:5000/start?condition=show
-http://127.0.0.1:5000/start?condition=tell
-http://127.0.0.1:5000/start?condition=try
+http://127.0.0.1:5000/consent?condition=show
+http://127.0.0.1:5000/consent?condition=tell
+http://127.0.0.1:5000/consent?condition=try
 ```
 
-For the actual study flow, use the `Start Study` button on the welcome page so the system can randomize the condition.
+For the actual study flow, send participants to the welcome page and have them start from the consent screen so the system can randomize the condition.
 
 ## Project Structure
 
@@ -64,6 +64,7 @@ hci_explanation_backend/
     surveys.csv
   templates/
     base.html
+    consent.html
     welcome.html
     task.html
     survey.html
@@ -93,13 +94,15 @@ analysis_output/
 
 ## Implemented Backend Features
 
-### 1. Random condition assignment
+### 1. Condition assignment
 
-When a participant starts the study, the backend randomly assigns one of:
+When a participant starts the study, the backend assigns one of:
 
 ```text
 show / tell / try
 ```
+
+In normal data collection, the app prefers the least-filled condition to keep groups balanced. Condition-specific URLs are still available for local testing.
 
 Implementation:
 
@@ -132,6 +135,7 @@ The flow is:
 
 ```text
 /              welcome page
+/consent       participant consent and eligibility confirmation
 /start         create participant session and assign condition
 /task/1        task 1
 /task/2        task 2
@@ -218,6 +222,22 @@ Response format:
 ```
 
 This endpoint is not a real machine learning model. It is a deterministic weighted scoring simulation used to support the interactive explanation condition in the HCI study.
+
+## Recommended User Study Procedure
+
+1. Pilot the study internally with all 3 conditions using the developer links above.
+2. Replace the placeholder contact language on the consent page before collecting real data.
+3. Open the app on one study device or deploy it to a shared URL.
+4. Send real participants only to `http://127.0.0.1:5000/` or your deployed root URL.
+5. Ask participants to complete the study in one sitting without refreshing or opening multiple tabs.
+6. After data collection, export `data/participants.csv`, `data/responses.csv`, and `data/surveys.csv` for analysis.
+
+Recommended moderator script:
+
+- Ask the participant to read the consent form and continue only if they agree.
+- Do not explain the three conditions in advance.
+- Tell them to choose the best product for each scenario and answer honestly about whether the AI is correct.
+- Do not help with task decisions once the study begins.
 
 ## Data Export
 

@@ -10,9 +10,7 @@
       confidence, and trust calibration.
     </p>
     <div class="hero-actions">
-      <form action="{{ url_for('main.start') }}" method="post" class="start-form">
-        <button type="submit" class="primary-button">Start randomized study</button>
-      </form>
+      <a href="{{ url_for('main.consent') }}" class="primary-link">Review consent and start</a>
       {% if has_session %}
       <a href="{{ url_for('main.current_task') }}" class="secondary-link">Resume current session</a>
       {% endif %}
@@ -61,9 +59,9 @@
   <details class="dev-details">
     <summary>Developer test links</summary>
     <p>Use these only for local testing, not for real participants.</p>
-    <a href="{{ url_for('main.start', condition='show') }}">Start with Show condition</a>
-    <a href="{{ url_for('main.start', condition='tell') }}">Start with Tell condition</a>
-    <a href="{{ url_for('main.start', condition='try') }}">Start with Let Me Try condition</a>
+    <a href="{{ url_for('main.consent', condition='show') }}">Start with Show condition</a>
+    <a href="{{ url_for('main.consent', condition='tell') }}">Start with Tell condition</a>
+    <a href="{{ url_for('main.consent', condition='try') }}">Start with Let Me Try condition</a>
   </details>
 </section>
 {% endblock %}

@@ -46,6 +46,8 @@ PARTICIPANT_FIELDS = [
     "condition",
     "task_order",
     "started_at",
+    "consented_at",
+    "consent_version",
     "user_agent",
 ]
 
@@ -56,10 +58,28 @@ def utc_now_iso() -> str:
 
 def ensure_csv(path: Path, fieldnames: Iterable[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    expected_fields = list(fieldnames)
     if not path.exists() or path.stat().st_size == 0:
         with path.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=list(fieldnames))
+            writer = csv.DictWriter(f, fieldnames=expected_fields)
             writer.writeheader()
+        return
+
+    with path.open("r", newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        current_header = next(reader, [])
+
+    if current_header == expected_fields:
+        return
+
+    with path.open("r", newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=expected_fields)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row.get(field, "") for field in expected_fields})
 
 
 def ensure_storage_files(config: Dict[str, Any]) -> None:
@@ -73,6 +93,21 @@ def ensure_storage_files(config: Dict[str, Any]) -> None:
 def load_tasks(tasks_file: Path) -> List[Dict[str, Any]]:
     with Path(tasks_file).open("r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def count_rows_by_value(path: Path, key: str) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    csv_path = Path(path)
+    if not csv_path.exists() or csv_path.stat().st_size == 0:
+        return counts
+
+    with csv_path.open("r", newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            value = str(row.get(key, "")).strip()
+            if not value:
+                continue
+            counts[value] = counts.get(value, 0) + 1
+    return counts
 
 
 def get_task_by_id(tasks: List[Dict[str, Any]], task_id: str) -> Dict[str, Any]:

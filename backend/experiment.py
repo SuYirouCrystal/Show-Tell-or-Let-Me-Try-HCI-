@@ -22,6 +22,22 @@ def assign_condition(conditions: List[str], requested_condition: Optional[str] =
     return random.choice(conditions)
 
 
+def assign_balanced_condition(
+    conditions: List[str],
+    observed_counts: Dict[str, int],
+    requested_condition: Optional[str] = None,
+) -> str:
+    if requested_condition in conditions:
+        return requested_condition
+
+    min_count = min(observed_counts.get(condition, 0) for condition in conditions)
+    eligible_conditions = [
+        condition for condition in conditions
+        if observed_counts.get(condition, 0) == min_count
+    ]
+    return random.choice(eligible_conditions)
+
+
 def make_task_order(tasks: List[Dict[str, Any]], randomize: bool = True) -> List[str]:
     task_ids = [str(task["task_id"]) for task in tasks]
     if randomize:

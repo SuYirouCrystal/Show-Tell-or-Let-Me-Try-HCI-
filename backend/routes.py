@@ -16,6 +16,7 @@ from flask import (
 
 from .experiment import (
     assign_condition,
+    assign_balanced_condition,
     compute_weighted_scores,
     evaluate_error_detection,
     make_task_order,
@@ -27,6 +28,7 @@ from .storage import (
     RESPONSE_FIELDS,
     SURVEY_FIELDS,
     append_row,
+    count_rows_by_value,
     get_task_by_id,
     load_tasks,
     utc_now_iso,
@@ -52,13 +54,46 @@ def welcome():
     return render_template("welcome.html", has_session=_require_participant())
 
 
+@bp.route("/consent", methods=["GET", "POST"])
+def consent():
+    requested_condition = request.args.get("condition") or request.form.get("condition")
+
+    if request.method == "POST":
+        age_confirm = request.form.get("age_confirm") == "yes"
+        consent_agree = request.form.get("consent_agree") == "yes"
+        if not age_confirm or not consent_agree:
+            return render_template(
+                "error.html",
+                message="You must confirm eligibility and consent before starting the study.",
+            ), 400
+
+        session["consent_given"] = True
+        session["consented_at"] = utc_now_iso()
+        if requested_condition:
+            return redirect(url_for("main.start", condition=requested_condition))
+        return redirect(url_for("main.start"))
+
+    return render_template("consent.html", requested_condition=requested_condition)
+
+
 @bp.route("/start", methods=["GET", "POST"])
 def start():
+    if not session.get("consent_given"):
+        requested_condition = request.args.get("condition") or request.form.get("condition")
+        if requested_condition:
+            return redirect(url_for("main.consent", condition=requested_condition))
+        return redirect(url_for("main.consent"))
+
     tasks = _tasks()
     requested_condition = request.args.get("condition") or request.form.get("condition")
-    condition = assign_condition(current_app.config["CONDITIONS"], requested_condition)
+    if requested_condition:
+        condition = assign_condition(current_app.config["CONDITIONS"], requested_condition)
+    else:
+        observed_counts = count_rows_by_value(Path(current_app.config["PARTICIPANTS_FILE"]), "condition")
+        condition = assign_balanced_condition(current_app.config["CONDITIONS"], observed_counts)
     participant_id = new_participant_id()
     task_order = make_task_order(tasks, current_app.config["RANDOMIZE_TASK_ORDER"])
+    consented_at = session.get("consented_at", utc_now_iso())
 
     session.clear()
     session["participant_id"] = participant_id
@@ -76,6 +111,8 @@ def start():
             "condition": condition,
             "task_order": ",".join(task_order),
             "started_at": session["started_at"],
+            "consented_at": consented_at,
+            "consent_version": "v1",
             "user_agent": _current_user_agent(),
         },
     )

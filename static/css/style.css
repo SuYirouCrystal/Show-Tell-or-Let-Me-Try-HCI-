@@ -692,6 +692,66 @@ h3 {
   margin: 0 auto;
 }
 
+.consent-card {
+  display: grid;
+  gap: 24px;
+}
+
+.consent-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.44fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.consent-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.consent-block {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--card-soft);
+}
+
+.consent-block p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.consent-list {
+  margin: 12px 0 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+
+.consent-side {
+  padding: 24px;
+}
+
+.consent-form {
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.checkbox-line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card-soft);
+}
+
+.checkbox-line input {
+  margin-top: 4px;
+}
+
 .survey-intro {
   display: grid;
   gap: 10px;
@@ -750,6 +810,7 @@ textarea {
   .hero-layout,
   .condition-grid,
   .research-card,
+  .consent-layout,
   .task-layout,
   .response-grid,
   .survey-grid {

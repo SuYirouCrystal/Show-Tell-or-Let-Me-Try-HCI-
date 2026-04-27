@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Consent{% endblock %}
+{% block content %}
+<section class="card consent-card">
+  <div class="survey-intro">
+    <p class="eyebrow">Participant consent</p>
+    <h1>Consent to participate</h1>
+    <p class="lead">
+      Please review this information before starting the study. You may stop at any time by closing the browser.
+    </p>
+  </div>
+
+  <div class="consent-layout">
+    <section class="consent-copy">
+      <div class="consent-block">
+        <h2>Purpose</h2>
+        <p>
+          This study examines how different AI explanation formats affect decision-making, understanding,
+          trust, and cognitive effort during product selection tasks.
+        </p>
+      </div>
+
+      <div class="consent-block">
+        <h2>What you will do</h2>
+        <ul class="consent-list">
+          <li>Complete 6 product-selection tasks in a web interface.</li>
+          <li>See AI recommendations shown in one explanation format for the full session.</li>
+          <li>Answer short confidence and AI-judgment questions after each task.</li>
+          <li>Complete a final questionnaire about your experience.</li>
+        </ul>
+      </div>
+
+      <div class="consent-block">
+        <h2>Time and data</h2>
+        <p>
+          The session should take about 8 to 12 minutes. The system records your choices, timing, condition,
+          survey responses, and browser user-agent string. Do not enter sensitive personal information.
+        </p>
+      </div>
+
+      <div class="consent-block">
+        <h2>Voluntary participation</h2>
+        <p>
+          Participation is voluntary. You may stop at any time without penalty. If you do not want to participate,
+          choose "I do not agree" below.
+        </p>
+      </div>
+
+      <div class="consent-block">
+        <h2>Risks</h2>
+        <p>
+          This is a minimal-risk study involving ordinary computer use. Some participants may experience mild fatigue
+          or frustration while completing the tasks.
+        </p>
+      </div>
+
+      <div class="consent-block">
+        <h2>Questions</h2>
+        <p>
+          Replace this section with your team's contact information and any required course or IRB language before
+          external data collection.
+        </p>
+      </div>
+    </section>
+
+    <aside class="card consent-side">
+      <p class="eyebrow">Before you start</p>
+      <form action="{{ url_for('main.consent') }}{% if requested_condition %}?condition={{ requested_condition }}{% endif %}" method="post" class="response-form consent-form">
+        <label class="checkbox-line">
+          <input type="checkbox" name="age_confirm" value="yes" required>
+          <span>I confirm that I am 18 or older.</span>
+        </label>
+
+        <label class="checkbox-line">
+          <input type="checkbox" name="consent_agree" value="yes" required>
+          <span>I have read the information above and agree to participate in this study.</span>
+        </label>
+
+        <input type="hidden" name="condition" value="{{ requested_condition or '' }}">
+
+        <button type="submit" class="primary-button">I agree, begin study</button>
+        <a href="{{ url_for('main.welcome') }}" class="secondary-link">I do not agree</a>
+      </form>
+    </aside>
+  </div>
+</section>
+{% endblock %}
