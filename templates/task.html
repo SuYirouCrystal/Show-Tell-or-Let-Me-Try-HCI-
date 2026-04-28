@@ -23,7 +23,7 @@
     <div class="scenario-spotlight">
       <div class="scenario-banner">
         <span class="scenario-icon" aria-hidden="true">i</span>
-        <p class="eyebrow">Read the user need carefully</p>
+        <p class="eyebrow">Participant needs and priorities</p>
       </div>
       <p class="scenario">{{ task.scenario }}</p>
     </div>
@@ -80,32 +80,6 @@
         <span class="ai-chip">
           {% if condition == "try" %}Fixed AI output{% else %}Static output{% endif %}
         </span>
-      </div>
-
-      <div class="purpose-panel">
-        <div class="purpose-banner">
-          <span class="purpose-icon" aria-hidden="true">!</span>
-          <p class="eyebrow">Read this before deciding</p>
-        </div>
-        {% if condition == "show" %}
-        <h3>Purpose of this panel</h3>
-        <p>
-          This visual explanation highlights which factors the AI emphasized when it produced the recommendation above.
-          The bars are a static explanation of the AI's reasoning for this task.
-        </p>
-        {% elif condition == "tell" %}
-        <h3>Purpose of this panel</h3>
-        <p>
-          This text explanation describes the AI's reasoning in words. Read it as the AI's stated rationale for the
-          recommendation above.
-        </p>
-        {% elif condition == "try" %}
-        <h3>Purpose of this panel</h3>
-        <p>
-          The recommendation above is the AI's original fixed answer. The simulation below is a separate what-if tool:
-          when you move the sliders, it shows how a simplified scoring model would change if feature priorities changed.
-        </p>
-        {% endif %}
       </div>
 
       {% if condition == "show" %}
