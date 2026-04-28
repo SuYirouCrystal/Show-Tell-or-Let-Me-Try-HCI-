@@ -20,8 +20,17 @@
   <div class="task-heading">
     <p class="eyebrow">Decision scenario</p>
     <h1>{{ task.title }}</h1>
-    <p class="scenario">{{ task.scenario }}</p>
-    <h2>{{ task.decision_prompt }}</h2>
+    <div class="scenario-spotlight">
+      <div class="scenario-banner">
+        <span class="scenario-icon" aria-hidden="true">i</span>
+        <p class="eyebrow">Read the user need carefully</p>
+      </div>
+      <p class="scenario">{{ task.scenario }}</p>
+    </div>
+    <div class="decision-prompt-card">
+      <p class="eyebrow">Your decision task</p>
+      <h2>{{ task.decision_prompt }}</h2>
+    </div>
   </div>
 
   <div class="task-layout">
