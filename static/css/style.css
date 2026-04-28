@@ -152,6 +152,11 @@ body {
   backdrop-filter: blur(16px);
 }
 
+.study-card .eyebrow {
+  font-size: 15px;
+  letter-spacing: 0.09em;
+}
+
 .study-steps {
   display: grid;
   gap: 16px;
@@ -748,6 +753,17 @@ h3 {
 .consent-card {
   display: grid;
   gap: 24px;
+}
+
+.consent-card .lead {
+  max-width: 920px;
+  margin: 10px 0 0;
+  color: #58657b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .consent-layout {
