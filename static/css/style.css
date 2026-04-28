@@ -493,11 +493,43 @@ h3 {
 }
 
 .purpose-panel {
-  margin-bottom: 16px;
-  padding: 16px 18px;
-  border: 1px solid rgba(49, 86, 212, 0.18);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(49, 86, 212, 0.08), rgba(49, 86, 212, 0.03));
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  border: 2px solid rgba(49, 86, 212, 0.28);
+  border-left: 8px solid var(--primary);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(49, 86, 212, 0.16), rgba(49, 86, 212, 0.06));
+  box-shadow: 0 12px 28px rgba(49, 86, 212, 0.12);
+}
+
+.purpose-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.purpose-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 8px 18px rgba(49, 86, 212, 0.24);
+}
+
+.purpose-panel .eyebrow {
+  margin: 0;
+  color: var(--primary-dark);
+}
+
+.purpose-panel h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
 }
 
 .purpose-panel p:last-child {
